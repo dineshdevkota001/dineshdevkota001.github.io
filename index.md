@@ -10,9 +10,9 @@ Dinesh
 
 I hope to make this section about gags and giggles. About jokes for you nazis out there.
 
-```
-
 #Market price
+
+```
 
 Q: What goes up but never comes down?
 
