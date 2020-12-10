@@ -1,13 +1,27 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/dineshdevkota001/dineshdevkota001.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
+## Welcome to my Website hosted from github
+This is Dinesh Devkota from the depths of hell. I know what you are thinking. Where are the red accents?
+Well They are not here, they are on a break. And i will also break you if you keep asking me that.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+Peace,
+Dinesh
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Gags and Giggles
 
+I hope to make this section about gags and giggles. About jokes for you nazis out there.
+
+```Market Price
+#Market price
+Q: What goes up but never comes down?
+A: 1. Gold prices.
+    2. Your age.
+    and the last, 
+    3. Yomama's size
+```
+Fuck you, i am miserly and depressed.
+
+<!--
 ```markdown
 Syntax highlighted code block
 
@@ -34,4 +48,4 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.-->
