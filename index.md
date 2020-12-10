@@ -10,7 +10,7 @@ Dinesh
 
 I hope to make this section about gags and giggles. About jokes for you nazis out there.
 
-###Market price
+### Market price
 
 ```
 
@@ -28,7 +28,7 @@ and the last,
 ```
 Fuck you, i am miserly and depressed.
 
-###Those spike heads
+### Those spike heads
 
 ```
 Q: What do pearl and ruby have in common?
