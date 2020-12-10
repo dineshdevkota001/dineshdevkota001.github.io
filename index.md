@@ -10,7 +10,8 @@ Dinesh
 
 I hope to make this section about gags and giggles. About jokes for you nazis out there.
 
-```Market Price
+```
+
 #Market price
 
 Q: What goes up but never comes down?
@@ -23,6 +24,7 @@ A:
 and the last, 
 
 3. Yomama's size
+
 ```
 Fuck you, i am miserly and depressed.
 
