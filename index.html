@@ -13,23 +13,33 @@
             height: 100vh;
         }
         .input-container {
-            width: 300px;
-            padding: 20px;
+            width: 500px;
+            padding: 0 20px;
             overflow-y: auto;
             border-right: 1px solid #ccc;
+            position: relative
         }
         .input-group {
-            margin-bottom: 15px;
+            background-color: whitesmoke;
+            margin-bottom: 8px;
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
         }
         .input-group label {
             display: block;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            flex-grow: 1
         }
         .input-group input {
-            width: 100%;
-            padding: 5px;
+            padding: 8px;
+            border-radius: 8px;
             box-sizing: border-box;
+            flex-shrink: 1
         }
         .chart-container {
             flex: 1;
@@ -54,12 +64,24 @@
         button:hover {
             background-color: #0056b3;
         }
+        .heading{
+position: sticky;
+top: 0;
+background-color: white;
+padding: 20px 0;
+        }
+        .update-button{
+            position: sticky;
+            background-color: white;
+            bottom: 0;
+            padding: 20px 0;
+        }
     </style>
 </head>
 <body>
     <!-- Inputs Container -->
     <div class="input-container">
-        <h2>Input Variables</h2>
+        <h2 class="heading">Input Variables</h2>
         <!-- Ordered by importance -->
         <div class="input-group">
             <label for="evInitialCost">EV Initial Cost (₹):</label>
@@ -133,7 +155,9 @@
             <label for="iceReplacementYear">ICE Replacement Year:</label>
             <input type="number" id="iceReplacementYear" value="20">
         </div>
-        <button onclick="updateGraph()">Update Graph</button>
+        <div class="update-button" >
+            <button onclick="updateGraph()">Update Graph</button>
+        </div>
     </div>
 
     <!-- Chart Container -->
@@ -165,7 +189,7 @@
             const engineReplaces = Math.floor(year / variables.engineReplacementYear);
             const engineUpgradeCost = engineReplaces * variables.engineReplacementCost;
             const iceReplaces = Math.floor(year / variables.iceReplacementYear);
-            const iceUpgradeCost = iceReplaces * variables.iceInitialCost * ((1 + variables.inflationDepreciation / 100) ** variables.iceReplacementYear;
+            const iceUpgradeCost = iceReplaces * variables.iceInitialCost * ((1 + variables.inflationDepreciation / 100) ** variables.iceReplacementYear);
             const dailyCost = variables.dailyKms * variables.iceCostPerKm;
             const totalRunningCost = (dailyCost * 365 + variables.iceRepairPerYear) * year;
             const totalRoadTax = variables.iceRoadTaxPerYear * year;
@@ -216,6 +240,10 @@
             const width = canvas.width - 2 * margin;
             const height = canvas.height - 2 * margin;
 
+            ctx.strokeStyle = 'black';
+            ctx.fillStyle = 'black';
+
+
             // Draw axes
             ctx.beginPath();
             ctx.moveTo(margin, margin);
@@ -223,20 +251,47 @@
             ctx.lineTo(canvas.width - margin, canvas.height - margin);
             ctx.stroke();
 
-            // Draw labels
-            ctx.fillText("Years", canvas.width / 2, canvas.height - 10);
-            ctx.save();
-            ctx.translate(10, canvas.height / 2);
-            ctx.rotate(-Math.PI / 2);
-            ctx.fillText("Cost (in lakhs)", 0, 0);
-            ctx.restore();
+            // Draw ticks and labels for the x-axis (Years)
+            const xTicks = x.length;
+            const xTickSpacing = width / (xTicks - 1);
+            ctx.font = "12px Arial";
+            ctx.textAlign = "center";
+
+            for (let i = 0; i < xTicks; i++) {
+                const xPos = margin + i * xTickSpacing;
+                // Draw tick
+                ctx.beginPath();
+                ctx.moveTo(xPos, canvas.height - margin);
+                ctx.lineTo(xPos, canvas.height - margin + 5);
+                ctx.stroke();
+                // Draw label
+                ctx.fillText(x[i], xPos, canvas.height - margin + 20);
+            }
+
+            // Draw ticks and labels for the y-axis (Cost in lakhs)
+            const maxCost = Math.max(...ev, ...ice);
+            const yTicks = 10;
+            const yTickSpacing = height / yTicks;
+            ctx.textAlign = "right";
+            
+            for (let i = 0; i <= yTicks; i++) {
+                const yPos = canvas.height - margin - i * yTickSpacing;
+                // Draw tick
+                ctx.beginPath();
+                ctx.moveTo(margin - 5, yPos);
+                ctx.lineTo(margin, yPos);
+                ctx.stroke();
+                // Draw label
+                const costValue = (i * (maxCost / yTicks)).toFixed(1);
+                ctx.fillText(costValue, margin - 10, yPos + 5);
+            }
 
             // Draw the EV line
             ctx.beginPath();
             ctx.strokeStyle = 'blue';
             x.forEach((year, i) => {
-                const xPos = margin + (year - 1) * (width / (x.length - 1));
-                const yPos = canvas.height - margin - ev[i] * (height / Math.max(...ev, ...ice));
+                const xPos = margin + (year - 1) * xTickSpacing;
+                const yPos = canvas.height - margin - ev[i] * (height / maxCost);
                 if (i === 0) ctx.moveTo(xPos, yPos);
                 else ctx.lineTo(xPos, yPos);
             });
@@ -246,8 +301,8 @@
             ctx.beginPath();
             ctx.strokeStyle = 'red';
             x.forEach((year, i) => {
-                const xPos = margin + (year - 1) * (width / (x.length - 1));
-                const yPos = canvas.height - margin - ice[i] * (height / Math.max(...ev, ...ice));
+                const xPos = margin + (year - 1) * xTickSpacing;
+                const yPos = canvas.height - margin - ice[i] * (height / maxCost);
                 if (i === 0) ctx.moveTo(xPos, yPos);
                 else ctx.lineTo(xPos, yPos);
             });
