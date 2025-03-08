@@ -3,320 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EV vs ICE Cost Comparison</title>
+    <title>Welcome to Dinesh Devkota's Homepage</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
             display: flex;
-            height: 100vh;
-        }
-        .input-container {
-            width: 500px;
-            padding: 0 20px;
-            overflow-y: auto;
-            border-right: 1px solid #ccc;
-            position: relative
-        }
-        .input-group {
-            background-color: whitesmoke;
-            margin-bottom: 8px;
-            padding: 8px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-        }
-        .input-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 4px;
-            flex-grow: 1
-        }
-        .input-group input {
-            padding: 8px;
-            border-radius: 8px;
-            box-sizing: border-box;
-            flex-shrink: 1
-        }
-        .chart-container {
-            flex: 1;
-            padding: 20px;
-            display: flex;
             justify-content: center;
-            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #e0e0e0, #ffffff);
+            overflow: hidden;
         }
-        canvas {
-            border: 1px solid #000;
-            max-width: 100%;
-            max-height: 100%;
+
+        .glass-container {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 20px;
+            text-align: center;
+            width: 300px;
         }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto;
         }
-        button:hover {
+
+        .greeting {
+            margin: 20px 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .link {
+            display: inline-block;
+            text-decoration: none;
+            font-size: 1em;
+            color: #ffffff;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .link:hover {
             background-color: #0056b3;
-        }
-        .heading{
-position: sticky;
-top: 0;
-background-color: white;
-padding: 20px 0;
-        }
-        .update-button{
-            position: sticky;
-            background-color: white;
-            bottom: 0;
-            padding: 20px 0;
         }
     </style>
 </head>
 <body>
-    <!-- Inputs Container -->
-    <div class="input-container">
-        <h2 class="heading">Input Variables</h2>
-        <!-- Ordered by importance -->
-        <div class="input-group">
-            <label for="evInitialCost">EV Initial Cost (₹):</label>
-            <input type="number" id="evInitialCost" value="4000000">
+    <div class="glass-container">
+        <img src="public/crow.webp" alt="Crow" class="avatar">
+        <div class="greeting">
+            <script>
+                const hours = new Date().getHours();
+                let greeting;
+                if (hours < 12) greeting = "Good morning, dear visitor!";
+                else if (hours < 18) greeting = "Good afternoon, dear visitor!";
+                else greeting = "Good evening, dear visitor!";
+                document.write(greeting);
+            </script>
         </div>
-        <div class="input-group">
-            <label for="iceInitialCost">ICE Initial Cost (₹):</label>
-            <input type="number" id="iceInitialCost" value="3000000">
-        </div>
-        <div class="input-group">
-            <label for="dailyKms">Daily Kilometers:</label>
-            <input type="number" id="dailyKms" value="25">
-        </div>
-        <div class="input-group">
-            <label for="evCostPerKm">EV Cost per Km (₹):</label>
-            <input type="number" id="evCostPerKm" value="2">
-        </div>
-        <div class="input-group">
-            <label for="iceCostPerKm">ICE Cost per Km (₹):</label>
-            <input type="number" id="iceCostPerKm" value="14">
-        </div>
-        <div class="input-group">
-            <label for="evYearlyDepreciation">EV Yearly Depreciation (%):</label>
-            <input type="number" id="evYearlyDepreciation" value="25">
-        </div>
-        <div class="input-group">
-            <label for="iceYearlyDepreciation">ICE Yearly Depreciation (%):</label>
-            <input type="number" id="iceYearlyDepreciation" value="15">
-        </div>
-        <div class="input-group">
-            <label for="batteryReplacementYear">Battery Replacement Year:</label>
-            <input type="number" id="batteryReplacementYear" value="7">
-        </div>
-        <div class="input-group">
-            <label for="batteryReplacementCost">Battery Replacement Cost (₹):</label>
-            <input type="number" id="batteryReplacementCost" value="700000">
-        </div>
-        <div class="input-group">
-            <label for="engineReplacementYear">Engine Replacement Year:</label>
-            <input type="number" id="engineReplacementYear" value="5">
-        </div>
-        <div class="input-group">
-            <label for="engineReplacementCost">Engine Replacement Cost (₹):</label>
-            <input type="number" id="engineReplacementCost" value="50000">
-        </div>
-        <div class="input-group">
-            <label for="evRoadTaxPerYear">EV Road Tax per Year (₹):</label>
-            <input type="number" id="evRoadTaxPerYear" value="4000">
-        </div>
-        <div class="input-group">
-            <label for="iceRoadTaxPerYear">ICE Road Tax per Year (₹):</label>
-            <input type="number" id="iceRoadTaxPerYear" value="14000">
-        </div>
-        <div class="input-group">
-            <label for="iceRepairPerYear">ICE Repair per Year (₹):</label>
-            <input type="number" id="iceRepairPerYear" value="40000">
-        </div>
-        <div class="input-group">
-            <label for="evRepairPerYear">EV Repair per Year (₹):</label>
-            <input type="number" id="evRepairPerYear" value="20000">
-        </div>
-        <div class="input-group">
-            <label for="inflationDepreciation">Inflation Depreciation (%):</label>
-            <input type="number" id="inflationDepreciation" value="3">
-        </div>
-        <div class="input-group">
-            <label for="bankInterestRate">Bank Interest Rate (%):</label>
-            <input type="number" id="bankInterestRate" value="4">
-        </div>
-        <div class="input-group">
-            <label for="iceReplacementYear">ICE Replacement Year:</label>
-            <input type="number" id="iceReplacementYear" value="20">
-        </div>
-        <div class="update-button" >
-            <button onclick="updateGraph()">Update Graph</button>
-        </div>
+        <a href="evice.html" class="link">Visit My Page</a>
     </div>
-
-    <!-- Chart Container -->
-    <div class="chart-container">
-        <canvas id="costChart" width="800" height="400"></canvas>
-    </div>
-
-    <script>
-        // Function to get input values
-        function getInputValue(id) {
-            return parseFloat(document.getElementById(id).value);
-        }
-
-        // Function to calculate EV cost
-        function getEVCost(year, variables) {
-            const batteryUpgrades = Math.floor(year / variables.batteryReplacementYear);
-            const batteryUpgradeCost = batteryUpgrades * variables.batteryReplacementCost;
-            const dailyCost = variables.dailyKms * variables.evCostPerKm;
-            const totalRunningCost = (dailyCost * 365 + variables.evRepairPerYear) * year;
-            const totalRoadTax = variables.evRoadTaxPerYear * Math.max(year - 5, 0);
-            const depreceatedCost = ((1 - variables.evYearlyDepreciation / 100) ** year) * variables.evInitialCost;
-            const inflationAdjustedInvestment = ((1 - variables.inflationDepreciation / 100) ** year) * variables.evInitialCost;
-            const opportunityCost = Math.max(variables.evInitialCost - variables.iceInitialCost, 0) * ((1 + variables.bankInterestRate / 100) ** year);
-            return batteryUpgradeCost + totalRunningCost + totalRoadTax + inflationAdjustedInvestment - depreceatedCost + opportunityCost;
-        }
-
-        // Function to calculate ICE cost
-        function getICECost(year, variables) {
-            const engineReplaces = Math.floor(year / variables.engineReplacementYear);
-            const engineUpgradeCost = engineReplaces * variables.engineReplacementCost;
-            const iceReplaces = Math.floor(year / variables.iceReplacementYear);
-            const iceUpgradeCost = iceReplaces * variables.iceInitialCost * ((1 + variables.inflationDepreciation / 100) ** variables.iceReplacementYear);
-            const dailyCost = variables.dailyKms * variables.iceCostPerKm;
-            const totalRunningCost = (dailyCost * 365 + variables.iceRepairPerYear) * year;
-            const totalRoadTax = variables.iceRoadTaxPerYear * year;
-            const depreceatedCost = ((1 - variables.iceYearlyDepreciation / 100) ** year) * variables.iceInitialCost;
-            const inflationAdjustedInvestment = ((1 - variables.inflationDepreciation / 100) ** year) * variables.iceInitialCost;
-            const opportunityCost = Math.max(variables.iceInitialCost - variables.evInitialCost, 0) * ((1 + variables.bankInterestRate / 100) ** year);
-            return engineUpgradeCost + iceUpgradeCost + totalRunningCost + totalRoadTax + inflationAdjustedInvestment - depreceatedCost + opportunityCost;
-        }
-
-        // Function to update the graph
-        function updateGraph() {
-            // Get all input values
-            const variables = {
-                batteryReplacementYear: getInputValue('batteryReplacementYear'),
-                batteryReplacementCost: getInputValue('batteryReplacementCost'),
-                engineReplacementYear: getInputValue('engineReplacementYear'),
-                engineReplacementCost: getInputValue('engineReplacementCost'),
-                dailyKms: getInputValue('dailyKms'),
-                evCostPerKm: getInputValue('evCostPerKm'),
-                iceCostPerKm: getInputValue('iceCostPerKm'),
-                evRoadTaxPerYear: getInputValue('evRoadTaxPerYear'),
-                iceRoadTaxPerYear: getInputValue('iceRoadTaxPerYear'),
-                evYearlyDepreciation: getInputValue('evYearlyDepreciation'),
-                iceYearlyDepreciation: getInputValue('iceYearlyDepreciation'),
-                iceRepairPerYear: getInputValue('iceRepairPerYear'),
-                evRepairPerYear: getInputValue('evRepairPerYear'),
-                evInitialCost: getInputValue('evInitialCost'),
-                iceInitialCost: getInputValue('iceInitialCost'),
-                inflationDepreciation: getInputValue('inflationDepreciation'),
-                bankInterestRate: getInputValue('bankInterestRate'),
-                iceReplacementYear: getInputValue('iceReplacementYear'),
-            };
-
-            // Generate data for the graph
-            const x = Array.from({ length: 21 }, (_, i) => i + 1);
-            const ev = x.map(year => getEVCost(year, variables) / 100000);
-            const ice = x.map(year => getICECost(year, variables) / 100000);
-
-            // Draw the graph
-            const canvas = document.getElementById('costChart');
-            const ctx = canvas.getContext('2d');
-
-            // Clear the canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Set up the graph
-            const margin = 40;
-            const width = canvas.width - 2 * margin;
-            const height = canvas.height - 2 * margin;
-
-            ctx.strokeStyle = 'black';
-            ctx.fillStyle = 'black';
-
-
-            // Draw axes
-            ctx.beginPath();
-            ctx.moveTo(margin, margin);
-            ctx.lineTo(margin, canvas.height - margin);
-            ctx.lineTo(canvas.width - margin, canvas.height - margin);
-            ctx.stroke();
-
-            // Draw ticks and labels for the x-axis (Years)
-            const xTicks = x.length;
-            const xTickSpacing = width / (xTicks - 1);
-            ctx.font = "12px Arial";
-            ctx.textAlign = "center";
-
-            for (let i = 0; i < xTicks; i++) {
-                const xPos = margin + i * xTickSpacing;
-                // Draw tick
-                ctx.beginPath();
-                ctx.moveTo(xPos, canvas.height - margin);
-                ctx.lineTo(xPos, canvas.height - margin + 5);
-                ctx.stroke();
-                // Draw label
-                ctx.fillText(x[i], xPos, canvas.height - margin + 20);
-            }
-
-            // Draw ticks and labels for the y-axis (Cost in lakhs)
-            const maxCost = Math.max(...ev, ...ice);
-            const yTicks = 10;
-            const yTickSpacing = height / yTicks;
-            ctx.textAlign = "right";
-            
-            for (let i = 0; i <= yTicks; i++) {
-                const yPos = canvas.height - margin - i * yTickSpacing;
-                // Draw tick
-                ctx.beginPath();
-                ctx.moveTo(margin - 5, yPos);
-                ctx.lineTo(margin, yPos);
-                ctx.stroke();
-                // Draw label
-                const costValue = (i * (maxCost / yTicks)).toFixed(1);
-                ctx.fillText(costValue, margin - 10, yPos + 5);
-            }
-
-            // Draw the EV line
-            ctx.beginPath();
-            ctx.strokeStyle = 'blue';
-            x.forEach((year, i) => {
-                const xPos = margin + (year - 1) * xTickSpacing;
-                const yPos = canvas.height - margin - ev[i] * (height / maxCost);
-                if (i === 0) ctx.moveTo(xPos, yPos);
-                else ctx.lineTo(xPos, yPos);
-            });
-            ctx.stroke();
-
-            // Draw the ICE line
-            ctx.beginPath();
-            ctx.strokeStyle = 'red';
-            x.forEach((year, i) => {
-                const xPos = margin + (year - 1) * xTickSpacing;
-                const yPos = canvas.height - margin - ice[i] * (height / maxCost);
-                if (i === 0) ctx.moveTo(xPos, yPos);
-                else ctx.lineTo(xPos, yPos);
-            });
-            ctx.stroke();
-
-            // Add legend
-            ctx.fillStyle = 'blue';
-            ctx.fillText("EV", canvas.width - 100, margin + 20);
-            ctx.fillStyle = 'red';
-            ctx.fillText("ICE", canvas.width - 100, margin + 40);
-        }
-
-        // Initial graph rendering
-        updateGraph();
-    </script>
 </body>
 </html>
