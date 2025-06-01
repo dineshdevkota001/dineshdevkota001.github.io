@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>TICi-TACi-TOEi</title>
+</head>
+
+<body>
+    <style>
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: 100vh;
+            height: 100vh;
+        }
+
+        body {
+            background-color: #fff2df;
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .end {
+            background-color: red !important;
+        }
+
+        .O-next {
+            background-color: #fbe2f0 !important
+        }
+
+        .X {
+            background-color: #ee6002 !important;
+        }
+
+        .O {
+            background-color: #ee0290 !important;
+        }
+
+        .cell {
+            background-color: whitesmoke;
+            border-radius: 20%;
+            margin: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 800%;
+        }
+    </style>
+    <!-- title -->
+    <!-- board -->
+    <div id="board">
+        <span class="cell" onclick="handleCellClick(0)"></span>
+        <span class="cell" onclick="handleCellClick(1)"></span>
+        <span class="cell" onclick="handleCellClick(2)"></span>
+        <span class="cell" onclick="handleCellClick(3)"></span>
+        <span class="cell" onclick="handleCellClick(4)"></span>
+        <span class="cell" onclick="handleCellClick(5)"></span>
+        <span class="cell" onclick="handleCellClick(6)"></span>
+        <span class="cell" onclick="handleCellClick(7)"></span>
+        <span class="cell" onclick="handleCellClick(8)"></span>
+    </div>
+    <!-- Status -->
+    <div
+        style="display: flex; align-items: center; justify-content: center; flex-direction: column; border-radius: 32px; padding: 16px; background-color: white; flex-grow :1; align-self: center; justify-self: center;">
+        <p><span id="turn" style="font-weight: bold;">X</span>'s turn</p>
+        <br />
+        <p id="declare"></p>
+        <!-- turn -->
+        <!-- winner -->
+        <!-- button -->
+        <button type="button" onclick="reset()">Reload</button>
+    </div>
+    <script>
+        const board = document.getElementById("board")
+        const turn = document.getElementById("turn")
+        let paused = false
+        const innerText = {
+            X: "✕",
+            O: "◯"
+        }
+        let queue = []
+
+        const getText = (i, j) => {
+            return board.children[(j * 3) + (i * 1)].innerText
+        }
+        const isSameArray = (arr) => {
+            if (!arr[0]) return false
+            if (arr[0] === arr[1] && arr[1] === arr[2]) return true
+            return false
+        }
+
+        const checkWinning = () => {
+            for (let i in [0, 1, 2]) {
+                const row = [0, 1, 2].map(j => getText(i, j))
+                const column = [0, 1, 2].map(j => getText(j, i))
+                if (isSameArray(row)) return true
+                if (isSameArray(column)) return true
+            }
+
+            if (isSameArray([
+                getText(0, 0),
+                getText(1, 1),
+                getText(2, 2),
+            ])) return true
+            if (isSameArray([
+                getText(0, 2),
+                getText(1, 1),
+                getText(2, 0),
+            ])) return true
+            return false
+        }
+
+        const declareWin = (turnText) => {
+            paused = true
+            document.getElementsByTagName("body")[0].classList.remove("O-next")
+            document.getElementsByTagName("body")[0].classList.add("end")
+            document.getElementById("declare").innerText = `Player ${turnText} wins`
+            board.children.forEach(child => child.classList.add("paused"))
+        }
+
+        const changeTurn = (current) => {
+            const next = current === "X" ? "O" : "X"
+            turn.innerText = next
+            if (next === "O")
+                document.getElementsByTagName("body")[0].classList.toggle("O-next")
+        }
+
+        const writeToCell = (index, text = "") => {
+            const child = board.children[index]
+            child.innerText = innerText?.[text] ?? "";
+
+            switch (text) {
+                case "X":
+                    child.classList.add("X")
+                    child.classList.remove("O");
+                    break;
+                case "O":
+                    child.classList.add("O")
+                    child.classList.remove("X");
+                    break;
+                default:
+                    child.classList.remove("X");
+                    child.classList.remove("O");
+                    child.classList.remove("paused");
+                    break;
+            }
+        }
+
+        const reset = () => {
+            paused = false;
+            document.getElementById("declare").innerText = ""
+            document.getElementsByTagName("body")[0].classList.remove("end")
+            Array.from(board.children).forEach(child => { child.classList.remove("X"); child.classList.remove("O"); child.classList.remove("paused"); child.innerText = ''; })
+            changeTurn("X")
+            queue = []
+        }
+
+        const MAX_LENGTH = 6
+
+        const handleCellClick = (index) => {
+            if (paused) return;
+            const cell = board.children[index]
+            if (cell.innerText) return;
+
+            queue.push(index)
+            console.log(queue)
+            const turnText = turn.innerText
+            writeToCell(index, turnText)
+
+            // remove last
+            if (queue.length > MAX_LENGTH) {
+                const index = queue.shift()
+                writeToCell(index, "")
+            }
+            try {
+                if (checkWinning()) declareWin(turnText)
+                else
+                    changeTurn(turnText)
+            }
+            catch (e) {
+                console.log(e)
+            }
+        };
+    </script>
+</body>
+
+</html>
